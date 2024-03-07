@@ -1,0 +1,15 @@
+---
+# defaults file for prom-jmx-service
+service_name: prom-jmx-service
+service_root: "/etc/systemd/system/{{service_name}}"
+service_file: "/etc/systemd/system/{{service_name}}.service"
+jar_version: "0.20.0"
+jar_src: https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_httpserver/0.15.0/jmx_prometheus_httpserver-{{jar_version}}.jar
+sha1_src: sha1:https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_httpserver/0.15.0/jmx_prometheus_httpserver-{{jar_version}}.jar.sha1
+jar_deploy_path: /opt/prometheus/jmx_http_server
+service_config: "{{jar_deploy_path}}/httpserver_config.yml"
+service_start: "{{jar_deploy_path}}/start"
+jmxremote_port: 39081
+jmxremote_host: localhost
+external_ip: 0.0.0.0
+external_port: 8088

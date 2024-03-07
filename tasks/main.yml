@@ -1,0 +1,36 @@
+---
+# tasks file for prom-jmx-service
+- name: Creating Destanation folder
+  file: path="{{jar_deploy_path}}" state=directory
+
+- name: Creating service folder
+  file: path="{{service_root}}" state=directory
+
+- name: Getting JMX exporter  
+  get_url:
+    url:  "{{jar_src}}"
+    dest: "{{jar_deploy_path}}"
+    # checksum: "{{sha1_src}}"
+  register: jar_file
+
+- name: Getting JMX exporter configuration
+  template:
+    src:  "http-service.yml.j2"
+    dest: "{{service_config}}"
+
+- name: Installing start script
+  template:
+    src:  "start.j2"
+    dest: "{{service_start}}"
+    mode: 0755
+
+- name: Installing service
+  template:
+    src:  "a.service.j2"
+    dest: "{{service_file}}"
+
+- name: Service started
+  service: name={{service_name}} state=restarted enabled=yes daemon_reload=yes
+
+- name: Verifying JMX port "{{external_port}}"
+  wait_for: host={{ ansible_default_ipv4.address }} port={{external_port}} timeout=100

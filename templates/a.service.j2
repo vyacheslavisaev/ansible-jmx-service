@@ -1,0 +1,13 @@
+[Unit]
+Description=Prometheus JMX Server
+Documentation=https://github.com/prometheus/jmx_exporter
+Requires=network.target remote-fs.target
+After=network.target remote-fs.target
+
+[Service]
+Type=simple
+ExecStart={{service_start}}
+#ExecStop=
+
+[Install]
+WantedBy=multi-user.target
